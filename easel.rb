@@ -10,6 +10,8 @@ class Easel < Formula
 
   # depends_on "cmake" => :build
 
+  depends_on "autoconf" => :build
+
   def install
     system "autoconf" if build.head?
     system "./configure", "--prefix=#{prefix}"
