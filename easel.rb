@@ -9,6 +9,8 @@ class Easel < Formula
   option 'without-test', 'Skip build-time tests (not recommended)'
   depends_on 'autoconf' => :build
 
+  depends_on "autoconf" => :build
+
   def install
     system 'autoconf'
     system './configure', "--prefix=#{prefix}"
