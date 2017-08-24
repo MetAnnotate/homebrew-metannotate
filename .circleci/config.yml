@@ -1,0 +1,20 @@
+version: 2
+jobs:
+        build:
+                working_directory: ~/repo
+
+                steps:
+                        - run:
+                                name: Install brew
+                                command: |
+                                        ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install)"; test -d ~/.linuxbrew && PATH="$HOME/.linuxbrew/bin:$PATH"; test -d /home/linuxbrew/.linuxbrew && echo 'PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"' >> ~/.bashrc; test -r ~/.bash_profile && echo 'export PATH="$(brew --prefix)/bin:$PATH"' >>~/.bash_profile; echo 'export PATH="$(brew --prefix)/bin:$PATH"' >>~/.profile
+
+                        - run: 
+                                name: Test easel
+                                command: |
+                                        brew test easel.rb
+
+                        - run:
+                                name: Test pplacer
+                                command: |
+                                        brew test pplacer.rb
