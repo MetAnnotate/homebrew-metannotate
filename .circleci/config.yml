@@ -11,10 +11,12 @@ jobs:
                         enabled: true
 
                 steps:
+                        - checkout
+
                         -run:
                                 name: Install Dependencies
                                 command: |
-                                        echo "hello"#sudo apt-get install build-essential curl file git python-setuptools ruby
+                                        sudo apt-get install build-essential curl file git python-setuptools ruby
 
                         - run:
                                 name: Install brew
