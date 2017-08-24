@@ -1,6 +1,9 @@
 version: 2
 jobs:
         build:
+                machine:
+                        ruby:
+                                version: 2.3.3p222
                 working_directory: ~/repo
 
                 steps:
