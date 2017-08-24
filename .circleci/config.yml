@@ -22,9 +22,13 @@ jobs:
                                 name: Install brew
                                 command: |
                                         yes | ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/linuxbrew/go/install)"
+                                        echo "1"
                                         test -d ~/circleci/.linuxbrew && PATH="$HOME/circleci/.linuxbrew/bin:$PATH"
+                                        echo "2"
                                         test -d /home/circleci/linuxbrew/.linuxbrew && echo 'PATH="/home/circleci/linuxbrew/.linuxbrew/bin:$PATH"' >> ~/.bashrc
+                                        echo "3"
                                         test -r ~/.bash_profile && echo 'export PATH="$(brew --prefix)/bin:$PATH"' >>~/.bash_profile
+                                        echo "4"
                                         echo 'export PATH="$(brew --prefix)/bin:$PATH"' >>~/.profile
 
                         - run: 
