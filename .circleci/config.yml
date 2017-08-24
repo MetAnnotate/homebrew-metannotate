@@ -14,7 +14,3 @@ jobs:
                                 command: |
                                         brew test easel.rb
 
-                        - run:
-                                name: Test pplacer
-                                command: |
-                                        brew test pplacer.rb
