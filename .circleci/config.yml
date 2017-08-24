@@ -7,6 +7,11 @@ jobs:
                 working_directory: ~/repo
 
                 steps:
+                        -run:
+                                name: Install Dependencies
+                                command: |
+                                        sudo apt-get install build-essential curl file git python-setuptools ruby
+
                         - run:
                                 name: Install brew
                                 command: |
