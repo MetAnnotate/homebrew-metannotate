@@ -1,0 +1,43 @@
+version: 2
+jobs:
+  build:
+
+    working_directory: ~/repo
+
+    machine: true
+
+    steps:
+        - checkout
+
+          # Install Linuxbrew Dependencies Via Apt
+        - run:
+            name: Install Dependencies
+            command: |
+              sudo apt-get install build-essential python-dev curl file git python-setuptools ruby
+
+          # Install Linuxbrew (Note: Adding linuxbrew to the PATH here won't work since each run command runs in its
+          # own shell. The parent shell (the one that calls each run command) is not affected. We add `yes |` to
+          # tell linuxbrew to continue installing. We add `|| true` to override the linuxbrew install returning exit
+          # code 141. There may be a bug in the install of linuxbrew via a password where it returns 141 on a warning
+          # rather than on an error.)
+        - run:
+            name: Install Linuxbrew
+            command: |
+              yes | ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install)" || true
+
+          # Install Custom Linuxbrew Formulae (Note: Since the parent shell can't be given the path to linuxbrew we
+          # have to add it to the path within the same run command (child shell).)
+        - run:
+            name: Install Custom Formulae
+            command: |
+              export PATH="$HOME/.linuxbrew/bin:$PATH"
+              brew install ./easel.rb
+
+
+          # Run Linuxbrew Tests
+        - run:
+            name: Test Custom Formulae
+            command: |
+              export PATH="$HOME/.linuxbrew/bin:$PATH"
+              brew test ./easel.rb
+              
