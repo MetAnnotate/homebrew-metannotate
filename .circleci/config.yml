@@ -35,6 +35,4 @@ jobs:
               echo 'export PATH="$(brew --prefix)/bin:$PATH"' >>~/.profile
               brew install ./easel.rb
               brew test ./easel.rb
-
-
-
+              
