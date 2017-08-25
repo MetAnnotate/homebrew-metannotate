@@ -9,19 +9,30 @@ jobs:
     steps:
         - checkout
 
+          # Install Linuxbrew Dependencies Via Apt
         - run:
             name: Install Dependencies
             command: |
               sudo apt-get install build-essential python-dev curl file git python-setuptools ruby
 
+          # Install Linuxbrew (Note: Adding linuxbrew to the PATH here won't work since this run command is running
+          # in its own shell. The parent shell (the one that calls the run command) is not effected.). Add yes | to
+          # continue installing. Add || true to override linuxbrew install returning exit code 141. There may be a bug
+          # when you install linuxbrew via a password where it returns 141 on a warning rather than error.
         - run:
             name: Intall Linuxbrew
             command: |
-              ./install_brew.sh
-              export PATH="$HOME/.linuxbrew/bin:$PATH"
+              yes | ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install)" || true
+
+          # Run Linuxbrew Tests (Note: Since the parent shell can't be given the path to linux brew we have to
+          # add it to the path with in the run command (child shell).)
+        - run:
+            name: And Linuxbrew to PATH and Test
+            command: |
+              test -d ~/.linuxbrew && PATH="$HOME/.linuxbrew/bin:$PATH"
+              test -d /home/linuxbrew/.linuxbrew && PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
+              test -r ~/.bash_profile && echo 'export PATH="$(brew --prefix)/bin:$PATH"' >>~/.bash_profile
+              echo 'export PATH="$(brew --prefix)/bin:$PATH"' >>~/.profile
               brew install ./easel.rb
               brew test ./easel.rb
-
-
-
-
+              
