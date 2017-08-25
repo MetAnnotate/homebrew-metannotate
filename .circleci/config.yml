@@ -15,25 +15,26 @@ jobs:
             command: |
               sudo apt-get install build-essential python-dev curl file git python-setuptools ruby
 
-          # Install Linuxbrew (Note: Adding linuxbrew to the PATH here won't work since this run command is running
-          # in its own shell. The parent shell (the one that calls the run command) is not effected.). Add yes | to
-          # continue installing. Add || true to override linuxbrew install returning exit code 141. There may be a bug
-          # when you install linuxbrew via a password where it returns 141 on a warning rather than error.
+          # Install Linuxbrew (Note: Adding linuxbrew to the PATH here won't work since each run command runs in its
+          # own shell. The parent shell (the one that calls each run command) is not affected. We add `yes |` to
+          # tell linuxbrew to continue installing. We add `|| true` to override the linuxbrew install returning exit
+          # code 141. There may be a bug in the install of linuxbrew via a password where it returns 141 on a warning
+          # rather than on an error.)
         - run:
-            name: Intall Linuxbrew
+            name: Install Linuxbrew
             command: |
               yes | ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install)" || true
 
-          # Install Custom Linuxbrew Formulae (Note: Since the parent shell can't be given the path to linux brew we have to
-          # add it to the path with in the run command (child shell).)
+          # Install Custom Linuxbrew Formulae (Note: Since the parent shell can't be given the path to linuxbrew we
+          # have to add it to the path within the same run command (child shell).)
         - run:
             name: Install Custom Formulae
             command: |
               export PATH="$HOME/.linuxbrew/bin:$PATH"
               brew install ./easel.rb
 
-              
-          # Run Linuxbrew Tests (See note atop above run command.)
+
+          # Run Linuxbrew Tests
         - run:
             name: Test Custom Formulae
             command: |
