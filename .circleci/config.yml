@@ -19,7 +19,7 @@ jobs:
             command: |
               ./install_brew.sh
               export PATH="$HOME/.linuxbrew/bin:$PATH"
-              ls
+              brew install ./easel.rb
               brew test ./easel.rb
 
 
