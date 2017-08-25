@@ -17,16 +17,17 @@ jobs:
         - run:
             name: Intall Linuxbrew
             command: |
-              yes | ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install)"
+              yes | ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install)" || true
+
+        - run:
+            name: And Linuxbrew to PATH and Test
+            command: |
               test -d ~/.linuxbrew && PATH="$HOME/.linuxbrew/bin:$PATH"
               test -d /home/linuxbrew/.linuxbrew && PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
               test -r ~/.bash_profile && echo 'export PATH="$(brew --prefix)/bin:$PATH"' >>~/.bash_profile
               echo 'export PATH="$(brew --prefix)/bin:$PATH"' >>~/.profile
-
-        - run:
-            name: End-to-end Testing
-            command: |
-              brew test easel.rb
+              brew install ./easel.rb
+              brew test ./easel.rb
 
 
 
