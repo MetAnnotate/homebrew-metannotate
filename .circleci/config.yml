@@ -18,6 +18,7 @@ jobs:
             name: Intall Linuxbrew
             command: |
               ./install_brew.sh
+              export PATH="$HOME/.linuxbrew/bin:$PATH"
               brew test easel.rb
 
 
