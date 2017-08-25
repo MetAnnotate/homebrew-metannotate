@@ -24,15 +24,19 @@ jobs:
             command: |
               yes | ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install)" || true
 
-          # Run Linuxbrew Tests (Note: Since the parent shell can't be given the path to linux brew we have to
+          # Install Custom Linuxbrew Formulae (Note: Since the parent shell can't be given the path to linux brew we have to
           # add it to the path with in the run command (child shell).)
         - run:
-            name: And Linuxbrew to PATH and Test
+            name: Install Custom Formulae
             command: |
-              test -d ~/.linuxbrew && PATH="$HOME/.linuxbrew/bin:$PATH"
-              test -d /home/linuxbrew/.linuxbrew && PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
-              test -r ~/.bash_profile && echo 'export PATH="$(brew --prefix)/bin:$PATH"' >>~/.bash_profile
-              echo 'export PATH="$(brew --prefix)/bin:$PATH"' >>~/.profile
+              export PATH="$HOME/.linuxbrew/bin:$PATH"
               brew install ./easel.rb
+
+              
+          # Run Linuxbrew Tests (See note atop above run command.)
+        - run:
+            name: Test Custom Formulae
+            command: |
+              export PATH="$HOME/.linuxbrew/bin:$PATH"
               brew test ./easel.rb
               
