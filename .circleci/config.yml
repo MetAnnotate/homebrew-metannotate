@@ -18,11 +18,8 @@ jobs:
             name: Intall Linuxbrew
             command: |
               ./install_brew.sh
-
-        - run:
-            name: End-to-end Testing
-            command: |
               brew test easel.rb
+
 
 
 
