@@ -1,34 +1,29 @@
 version: 2
 jobs:
-        build:
-                working_directory: ~/repo
+    build:
+        working_directory: ~/repo
 
-                machine:
-                        enabled: true
+        machine:
+            enabled: true
 
-                steps:
-                        - checkout
+            steps:
+                - checkout
 
-                        - run:
-                                name: Install Dependencies
-                                command: |
-                                        sudo apt-get install build-essential curl file git python-setuptools ruby
+                - run:
+                    name: Install Dependencies
+                    command: |
+                        sudo apt-get install build-essential python-dev curl file git python-setuptools ruby
 
-                        - run:
-                                name: Install brew
-                                command: |
-                                        yes | ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/linuxbrew/go/install)"
+                - run:
+                    name: Install Linuxbrew
+                    command: |
+                        yes | ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/linuxbrew/go/install)"
+                        test -d ~/.linuxbrew && PATH="$HOME/.linuxbrew/bin:$PATH"
+                        test -d /home/linuxbrew/.linuxbrew && PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
+                        test -r ~/.bash_profile && echo 'export PATH="$(brew --prefix)/bin:$PATH"' >>~/.bash_profile
+                        echo 'export PATH="$(brew --prefix)/bin:$PATH"' >>~/.profile
 
-                        - run:
-                                name: Make PATH
-                                command: |
-                                        test -d ~/circleci/.linuxbrew && PATH="$HOME/circleci/.linuxbrew/bin:$PATH"
-                                        test -d /home/circleci/linuxbrew/.linuxbrew && echo 'PATH="/home/circleci/linuxbrew/.linuxbrew/bin:$PATH"' >> ~/.bashrc
-                                        test -r ~/.bash_profile && echo 'export PATH="$(brew --prefix)/bin:$PATH"' >>~/.bash_profile
-                                        echo 'export PATH="$(brew --prefix)/bin:$PATH"' >>~/.profile
-
-                        - run: 
-                                name: Test easel
-                                command: |
-                                        brew test easel.rb
-
+                - run:
+                    name: Test Easel
+                    command: |
+                        brew test easel.rb
