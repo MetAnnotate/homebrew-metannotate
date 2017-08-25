@@ -1,27 +1,32 @@
+version: 2
 jobs:
   build:
-    machine: true
 
     working_directory: ~/repo
 
+    machine: true
+
     steps:
-      - checkout
+        - checkout
 
-      - run:
-        name: Install Dependencies
-        command: |
-          sudo apt-get install build-essential python-dev curl file git python-setuptools ruby
+        - run:
+            name: Install Dependencies
+            command: |
+              sudo apt-get install build-essential python-dev curl file git python-setuptools ruby
 
-      - run:
-        name: Install Linuxbrew
-        command: |
-          yes | ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/linuxbrew/go/install)"
-          test -d ~/.linuxbrew && PATH="$HOME/.linuxbrew/bin:$PATH"
-          test -d /home/linuxbrew/.linuxbrew && PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
-          test -r ~/.bash_profile && echo 'export PATH="$(brew --prefix)/bin:$PATH"' >>~/.bash_profile
-          echo 'export PATH="$(brew --prefix)/bin:$PATH"' >>~/.profile
+        - run:
+            name: Intall Linuxbrew
+            command: |
+              ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install)"
+              test -d ~/.linuxbrew && PATH="$HOME/.linuxbrew/bin:$PATH"
+              test -d /home/linuxbrew/.linuxbrew && PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
+              test -r ~/.bash_profile && echo 'export PATH="$(brew --prefix)/bin:$PATH"' >>~/.bash_profile
+              echo 'export PATH="$(brew --prefix)/bin:$PATH"' >>~/.profile
 
-      - run:
-        name: Test Brew Formulae
-        command: |
-          brew test easel.rb
+        - run:
+            name: End-to-end Testing
+            command: |
+              brew test easel.rb
+
+
+
